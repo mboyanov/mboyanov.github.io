@@ -60,3 +60,19 @@
 
 .codecell table { width: auto; }
 
+.alert {
+  padding: 20px;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+  opacity: 0.83;
+  transition: opacity 0.6s;
+  border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.alert.warning {
+        color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
