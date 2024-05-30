@@ -90,7 +90,7 @@ tokenizer.decode([1, 35834, 32111, 28725, 8600, 19776, 28804])
 Ok, so now we need to apply the tokenization to the dataset. We will use the `map` method of the dataset object to apply the tokenization to all articles.
 
 ```python
-def tokenize_dataset(raw_datasets, tokenizer, data_args, training_args, text_column_name="text"):
+def tokenize_dataset(raw_datasets, tokenizer, num_workers, training_args, text_column_name="text", overwrite_cache=False):
     column_names = list(raw_datasets["train"].features)
     assert text_column_name in column_names, f"Provided text_column_name {text_column_name} not in dataset"
     def tokenize_function(examples):
@@ -102,9 +102,9 @@ def tokenize_dataset(raw_datasets, tokenizer, data_args, training_args, text_col
         tokenized_datasets = raw_datasets.map(
             tokenize_function,
             batched=True,
-            num_proc=data_args.preprocessing_num_workers,
+            num_proc=num_workers,
             remove_columns=column_names,
-            load_from_cache_file=not data_args.overwrite_cache,
+            load_from_cache_file=not overwrite_cache,
             desc="Running tokenizer on every text in dataset",
         )
         
