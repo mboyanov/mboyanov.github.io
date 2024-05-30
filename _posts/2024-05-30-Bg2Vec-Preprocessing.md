@@ -109,6 +109,9 @@ def tokenize_dataset(raw_datasets, tokenizer, num_workers, training_args, text_c
         )
         
     return tokenized_datasets
+
+
+tokenized_datasets = tokenize_dataset(dataset, tokenizer, num_workers, training_args)
 ```
 
 Now that we have tokenized the dataset, we can proceed with the chunking. We will group the articles into chunks of 512 tokens.
@@ -145,11 +148,23 @@ def group_texts(examples:LazyBatch, max_seq_length=1024):
     }
     return result
 
+grouped_datasets = tokenized_datasets.map(
+    group_texts,
+    batched=True,
+    num_proc=num_workers,
+    desc=f"Grouping texts in chunks of {max_seq_length}",
+)
+
 ```
 
 After applying the chunking, we can save the resulting dataset by using the `save_to_disk` method of the dataset object.
+We are now done with the preprocessing steps and can proceed with training!
 
-Stay tuned for the next part in the series, where we will fine-tune the BgGPT model using the Masked Next Token Prediction objective.
+This will be the subject in the next part in the series, where we will fine-tune the BgGPT model using the Masked Next Token Prediction objective.
+
+<div class="alert warning ">
+    A small amount of code has been ommited for brevity. Please refer to the full notebook in the <A href="https://github.com/mboyanov/bg2vec/blob/master/0.Preprocessing.ipynb">Bg2Vec repository </A>.
+</div>
 
 ## Useful links
 
