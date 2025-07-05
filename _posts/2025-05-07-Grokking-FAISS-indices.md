@@ -1,24 +1,24 @@
 # Getting Started with Vector Search Indices: A Practical Introduction
 
-In this blog post we will explore several different types of FAISS (Facebook AI Similarity Seach) indices - starting from Flat indices, 
-to IVF indices, and finally to quantized indices.
+In this blog post, we will explore several different types of **FAISS (Facebook AI Similarity Search)** indices - starting from **Flat indices**, 
+to **IVF indices**, and finally to **quantized indices**.
 We will mostly focus on how they organize the data and how they perform search. 
 
-But before we dive into the details, let’s take a step back and understand what we’re trying to achieve. FAISS is a 
-library for approximate nearest neighbor search - a problem that is more and more common with Retrieval Augmented Generation (RAG)
-and other applications. In those cases, documents are represented as vectors, and we want to find the most similar documents to a given query or anchor document.
+But before we dive into the details, let’s take a step back and understand what we’re trying to achieve. **FAISS** is a 
+library for **approximate nearest neighbor search** - a problem that is more and more common with **Retrieval Augmented Generation (RAG)**
+and other applications. In those cases, documents are represented as **vectors**, and we want to find the most similar documents to a given query or anchor document.
 
-Sometimes we have millions of documents which makes it infeasible to compute the similarity between the query and all documents. 
-This is where FAISS or other vector databases come in. They allow us to index the documents in a way that makes it possible to find the most
-similar documents quickly. In the remainder of this post, we will explore some of the algorithms that allow us to do that.
+Sometimes we have **millions of documents**, which makes it infeasible to compute the similarity between the query and all documents. 
+This is where **FAISS** or other **vector databases** come in. They allow us to **index the documents** in a way that makes it possible to find the most
+similar documents **quickly and efficiently**. In the remainder of this post, we will explore some of the algorithms that allow us to do that.
 
 ## Flat Index
 
-The Flat index is the simplest and most straightforward way to store and search for vectors. The vectors 
-are stored as-is in a flat array. 
+The **Flat index** is the simplest and most straightforward way to store and search for vectors. The vectors 
+are stored **as-is** in a flat array. 
 
-When a query comes in, the algorithm computes the distance between the query vector and every single vector in the dataset. As you can imagine, 
-this can be quite slow for large datasets. There is also no memory savings or compression applied, so the index size is equal to the size of the dataset.
+When a query comes in, the algorithm computes the **distance** between the query vector and **every single vector** in the dataset. As you can imagine, 
+this can be quite **slow** for large datasets. There is also **no memory savings or compression** applied, so the index size is equal to the size of the dataset.
 
 Let's check out the code for a Flat index:
 
@@ -42,8 +42,8 @@ the closest ones.
 
 ## Inverted File Index (IVF)
 
-IVF stands for Inverted File Index, and it’s a simple way to speed up searches by organizing data into clusters. 
-Instead of comparing the query point to every single data point, an IVF index first narrows down the search to a smaller subset of the data.
+**IVF** stands for **Inverted File Index**, and it’s a simple way to **speed up searches** by organizing data into **clusters**. 
+Instead of comparing the query point to every single data point, an **IVF index** first narrows down the search to a **smaller subset** of the data.
 
 This is done by clustering the data points into groups (or "cells") and then only searching within the relevant clusters.
 
@@ -63,17 +63,15 @@ dist, indices = index.search(data[0][None], k=10)
 dist, indices
 ```
 
-The `IVF8` part means that the data is divided into 8 clusters. The `Flat` part means that within each cluster, the data is stored in a flat array (like in the Flat index).
-If we have a larger dataset, we can increase the number of clusters to speed up the search even more. 
+The `IVF8` part means that the data is divided into **8 clusters**. The `Flat` part means that within each cluster, the data is stored in a **flat array** (like in the Flat index).
+If we have a **larger dataset**, we can increase the number of clusters to **speed up the search** even more. 
 
 When we search for the nearest neighbors, the algorithm first finds the closest clusters to the query point and then searches only within those clusters.
 
 <img src="/images/k-means-query.png">
 
-By default, faiss looks up only the closest cluster, but this can lead to missing some of the closest neighbors. It
-is possible to increase the number of clusters that are searched by setting the `nprobe` parameter. 
-
-
+By default, **FAISS** looks up only the **closest cluster**, but this can lead to **missing some of the closest neighbors**. It
+is possible to increase the number of clusters that are searched by setting the **`nprobe` parameter**. 
 
 ```python
 index.nprobe = 4
@@ -85,9 +83,9 @@ dist, indices
 
 ## Scalar Quantization (SQ)
 
-Scalar Quantization (SQ) is a compression technique that reduces the precision of vector components to **save memory** and **speed up computations**. Instead of storing each component as a 32-bit float, SQ maps the values to a smaller set of discrete levels using fewer bits (typically 8 bits or 4 bits). For example, with 8-bit quantization (SQ8, the default), each component is mapped to one of 256 possible values, reducing memory usage by 75% compared to full precision. The trade-off is a slight loss in accuracy since the original values are approximated, but this is often acceptable given the significant performance gains.
+**Scalar Quantization (SQ)** is a **compression technique** that reduces the precision of vector components to **save memory** and **speed up computations**. Instead of storing each component as a **32-bit float**, SQ maps the values to a **smaller set of discrete levels** using fewer bits (typically **8 bits** or **4 bits**). For example, with **8-bit quantization (SQ8)**, each component is mapped to one of **256 possible values**, reducing memory usage by **75%** compared to full precision. The trade-off is a slight **loss in accuracy**, but this is often acceptable given the significant **performance gains**.
 
-How does a scalar quantizer work? First, it finds the minimum and maximum for each dimension and computes the "scale" as the difference between the maximum and the minimum. Then, items are mapped to an integer in the range [0, 255] according to the formula:
+How does a **scalar quantizer** work? First, it finds the **minimum** and **maximum** for each dimension and computes the **"scale"** as the difference between the maximum and the minimum. Then, items are mapped to an integer in the range **[0, 255]** according to the formula:
 
 $$ f(x) = \lfloor\frac{x - min}{max-min} * 255 \rfloor $$
 
@@ -95,10 +93,10 @@ $$ f(x) = \lfloor\frac{x - min}{max-min} * 255 \rfloor $$
 Example:
 <img src="/images/sq.png">
 
-As you can see, the values are mapped to the range [0, 255] based on their relative position between the minimum and maximum values of each
-dimension. The minimum in each column corresponds to 0, the maximum corresponds to 255, and all other values are scaled accordingly.
+As you can see, the values are mapped to the range **[0, 255]** based on their relative position between the **minimum** and **maximum** values of each
+dimension. The **minimum** in each column corresponds to **0**, the **maximum** corresponds to **255**, and all other values are scaled accordingly.
 
-It's basically min-max normalization but it maps to [0,255] instead of [0, 1]. With basic numpy, the implementation would be something like:
+It's basically **min-max normalization**, but it maps to **[0,255]** instead of **[0, 1]**. With basic numpy, the implementation would be something like:
 
 ```python
 import numpy as np
@@ -118,7 +116,7 @@ tfmd_data[:5]
        [111, 120]], dtype=uint8)
 ```
 
-To train a scalar quantizer in FAISS we can do the following:
+To train a **scalar quantizer** in FAISS we can do the following:
 
 ```python
 import faiss
@@ -153,19 +151,19 @@ faiss.vector_float_to_array(index.codes).reshape(512, 2)[:5]
        [111, 120]], dtype=uint8)
 ```
 
-In most cases, scalar quantization is used in combination with another indexing method, for example `IVF8,SQ8`. This allows us to combine the efficiency from the IVF clustering with the storage reduction from scalar quantization.
+In most cases, **scalar quantization** is used in combination with another indexing method, for example **`IVF8,SQ8`**. This allows us to combine the **efficiency** from the IVF clustering with the **storage reduction** from scalar quantization.
 Interestingly, the **SQ8 quantization is applied on the residuals of the vectors** relative to their corresponding centroids.
 
 
 ## Product Quantization (PQ)
 
-Product Quantization (PQ) is a technique used to compress data points into smaller representations, making searches faster and more memory-efficient. 
-In this method, the data points are divided into smaller sub-vectors, and each sub-vector is quantized separately.
-For example, suppose we have a collection of 128-dimensional vectors. We can split each vector into 4 sub-vectors of 32 dimensions each.
-Then, we can run k-means clustering independenly on each of the sub-vector spaces to find a set of representative values (codebooks) for those parts of the vector.
-Afterwards, each vector can be represented as a combination of the indices of the codebooks for each sub-vector. 
-So, our 128 dimensional vector can be represented as an array of 4 indices, with each index representing a centroid from the corresponding codebook.
+**Product Quantization (PQ)** is a technique used to **compress data points** into smaller representations, making searches **faster** and more **memory-efficient**. 
+In this method, the data points are divided into **smaller sub-vectors**, and each sub-vector is quantized separately.
 
+For example, suppose we have a collection of **128-dimensional vectors**. We can split each vector into **4 sub-vectors** of **32 dimensions** each.
+Then, we can run **k-means clustering** independently on each of the sub-vector spaces to find a set of **representative values (codebooks)** for those parts of the vector.
+Afterwards, each vector can be represented as a combination of the **indices of the codebooks** for each sub-vector. 
+So, our **128-dimensional vector** can be represented as an array of **4 indices**, with each index representing a centroid from the corresponding codebook.
 
 ### How Does PQ Work?
 
@@ -244,10 +242,10 @@ display("Difference", to_table(data[:2] - index.reconstruct_n(0, 2)))
 
 As you can see, the quantization introduces some error or loss in precision, but it has the potential for massive memory savings.
 
-In practice, product quantization is used in combination with other indexing methods, such as IVF. Thus, the factory string
-for creating a product quantization index would look like `IVF8,PQ4x8`, which means that the data is first clustered into 8 groups, and then each vector is quantized into 4 subvectors with 8 bits each. 
-In this case, the product quantization will be applied to the **residuals of the vectors** relative to their corresponding centroids in the IVF clusters. This helps decrease the variance. By combining these techniques, we can achieve
-significant speedups and memory savings while still maintaining good search accuracy.
+In practice, **product quantization** is used in combination with other indexing methods, such as **IVF**. Thus, the factory string
+for creating a product quantization index would look like **`IVF8,PQ4x8`**, which means that the data is first clustered into **8 groups**, and then each vector is quantized into **4 sub-vectors** with **8 bits** each. 
+In this case, the product quantization will be applied to the **residuals of the vectors** relative to their corresponding centroids in the IVF clusters. This helps **decrease the variance**. By combining these techniques, we can achieve
+**significant speedups** and **memory savings** while still maintaining **good search accuracy**.
 
 ## Summary 
 
@@ -257,18 +255,18 @@ In this post, we explored several types of FAISS indices, including:
 - **Scalar Quantization (SQ)**: A compression technique that reduces the precision of vector components to save memory and speed up computations, often used in combination with IVF.
 - **Product Quantization (PQ)**: A technique that compresses data points into smaller representations by dividing them into sub-vectors and quantizing each sub-vector separately, allowing for efficient searches with reduced memory usage.
 
-In terms of memory savings, we can provide the following comparison:
+In terms of **memory savings**, we can provide the following comparison:
 
-| Index Type | Memory per Vector | Storage for 1M Vectors (128d) | Memory Savings |
-|------------|-------------------|-------------------------------|----------------|
-| Raw Vectors (32-bit float) | 512 bytes         | 488 MB | 0% (baseline) |
-| Flat Index | 512 bytes         | 488 MB | 0% |
-| IVF8,Flat | ~512 bytes*       | ~488 MB* | ~0%* |
-| SQ8 | 128 bytes         | 122 MB | 75% |
-| PQ4x8 | 4 bytes           | 3.8 MB** | >99% |
+| **Index Type** | **Memory per Vector** | **Storage for 1M Vectors (128d)** | **Memory Savings** |
+|----------------|-----------------------|-----------------------------------|--------------------|
+| **Raw Vectors (32-bit float)** | 512 bytes         | 488 MB | 0% (baseline) |
+| **Flat Index** | 512 bytes         | 488 MB | 0% |
+| **IVF8,Flat** | ~512 bytes*       | ~488 MB* | ~0%* |
+| **SQ8** | 128 bytes         | 122 MB | 75% |
+| **PQ4x8** | 4 bytes           | 3.8 MB** | >99% |
 
 *IVF adds a small overhead for centroids but doesn't significantly reduce per-vector storage   
 **Plus overhead for codebooks (~4 KB for PQ4x8)
 
-In a future post, we will explore more advanced indexing techniques, such as HNSW (Hierarchical Navigable Small World), OPQ(Optimized Product Quantization) and RVQ (Residual Vector Quantization).
+In a future post, we will explore more advanced indexing techniques, such as **HNSW (Hierarchical Navigable Small World)**, **OPQ (Optimized Product Quantization)**, and **RVQ (Residual Vector Quantization)**.
 
