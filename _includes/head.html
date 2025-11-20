@@ -5,6 +5,10 @@
   {%- seo -%}
   <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
   <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+  
+  <!-- Lightbox for click-to-zoom images -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" integrity="sha512-ZKX+BvQihRJPA5pCggLptAEySGlr3HVwr04SNsklMDWjsmROUdrSD5RQR7B+0UFIIRu8ba5DKJ+kR00préEpcw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/lightbox.min.js" integrity="sha512-3nYvJvJ1XO0sFIJPmAX5GBfCqBEZRywbVE9Wz0FwNTMmb2UUJ0LKNb+SpUm+l6u1/kRy4xgCj0VYU4a+P+JAcA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
     {%- include google-analytics.html -%}
@@ -29,25 +33,40 @@
   {% endif %}
 
   <script>
-  function wrap_img(fn) {
-    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
-        var elements = document.querySelectorAll(".post img");
-        Array.prototype.forEach.call(elements, function(el, i) {
-            if (el.getAttribute("title")) {
-                const caption = document.createElement('figcaption');
-                var node = document.createTextNode(el.getAttribute("title"));
-                caption.appendChild(node);
-                const wrapper = document.createElement('figure');
-                wrapper.className = 'image';
-                el.parentNode.insertBefore(wrapper, el);
-                el.parentNode.removeChild(el);
-                wrapper.appendChild(el);
-                wrapper.appendChild(caption);
-            }
-        });
-    } else { document.addEventListener('DOMContentLoaded', fn); }
+  function initLightbox() {
+    // Wrap images with titles in figures and captions
+    var elements = document.querySelectorAll(".post img:not(figure img)");
+    Array.prototype.forEach.call(elements, function(el, i) {
+        if (el.getAttribute("title")) {
+            const caption = document.createElement('figcaption');
+            var node = document.createTextNode(el.getAttribute("title"));
+            caption.appendChild(node);
+            const wrapper = document.createElement('figure');
+            wrapper.className = 'image';
+            el.parentNode.insertBefore(wrapper, el);
+            el.parentNode.removeChild(el);
+            wrapper.appendChild(el);
+            wrapper.appendChild(caption);
+        }
+    });
+    
+    // Reinitialize Lightbox after DOM changes
+    if (typeof lightbox !== 'undefined') {
+      lightbox.option({
+        'resizeDuration': 200,
+        'wrapAround': true,
+        'albumLabel': 'Image %1 of %2',
+        'disableScrolling': false
+      });
+    }
   }
-  window.onload = wrap_img;
+  
+  // Initialize on page load
+  if (document.readyState === "loading") {
+    document.addEventListener('DOMContentLoaded', initLightbox);
+  } else {
+    initLightbox();
+  }
   </script>
 
 </head>
