@@ -138,10 +138,10 @@ One of the main challenges with late interaction search is the storage overhead.
 
 In the case of the MS Marco dataset:
 
-1. The original corpus has around 8.8 million passages.
-2. The raw text size is around 3GB. 
-3. For a typical embedding model with embedding dimension 768, 8.8 million passages would require 27 GB of storage just for the token vectors.
-4. According to the MS Marco paper, the average passage length is around 56 tokens with whitespace tokenization. This means that the total number of token vectors would be around 8.8 million * 56 = 492.8 million token vectors, which would require the staggering 63.1 GB of storage. With subwords, it will probably be two or three times higher! In fact, the ColBERT v2 paper reports that the Colbert index size for MS Marco is around 154 GiB.
+1. The original corpus has around **8.8 million passages**.
+2. The raw text size is around **3GB**. 
+3. For **classical vector search** and a typical embedding model with embedding dimension 768, 8.8 million passages would require **27 GB** of storage just for the token vectors.
+4. For **late interaction**, we need to do some math. According to the MS Marco paper, the average passage length is around 56 tokens with whitespace tokenization. This means that the total number of token vectors would be around 8.8 million * 56 = 492.8 million token vectors, which would require the staggering **63.1 GB** of storage. With subwords, it will probably be two or three times higher! In fact, the ColBERT v2 paper reports that the Colbert index size for MS Marco is around **154 GiB**.
 
 It's safe to say - this is a major limiting factor for the adoption of late interaction search in practice. So, how can we fix it? Here are a few ideas:
 
@@ -157,7 +157,7 @@ The chart below shows a comparison of the different storage requirements:
 
 ## Thinking tokens / Query Augmentation
 
-In the pre-reasoning models era, there was often a recommended technique to ask the model to explain its reasoning or solution. E.g. add “Let’s think step by step”. This allows the model to use more compute to come up with an answer - see [Deep Dive into LLMs like ChatGPT by Andrej Karpathy](https://youtu.be/7xTGNNLPyMI?t=6474).
+In the pre-reasoning models era, there was often a recommended technique to ask the model to explain its reasoning or solution. E.g. add “Let’s think step by step”. This allows the model to use more compute to come up with an answer - see the section "models need tokens to think" in [Deep Dive into LLMs like ChatGPT by Andrej Karpathy](https://youtu.be/7xTGNNLPyMI?t=6474).
 
 <iframe  src="https://www.youtube.com/embed/7xTGNNLPyMI?start=6420" title="Deep Dive into LLMs like ChatGPT" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"  style="width:100%;height:400px;"
 allowfullscreen></iframe>
