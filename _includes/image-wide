@@ -1,0 +1,12 @@
+<figure class="image-wide">
+  <a href="/images/{{ include.url }}" data-lightbox="gallery" data-title="{% if include.caption %}{{ include.caption }}{% endif %}">
+    <img class="image" src="/images/{{ include.url }}"
+      {% if include.caption %}
+      alt="{{ include.caption }}"
+      {% endif %}
+    >
+  </a>
+  {% if include.caption %}
+  <figcaption class="image-caption">{{ include.caption }}</figcaption>
+  {% endif %}
+</figure>
