@@ -171,6 +171,8 @@ But why is that?
 
 I dug deeper and found out that the answer lies in the nature of the QJL transform. **By introducing stochastic noise to eliminate bias, we also introduce variance into the dot product approximations**. This variance can lead to ranking swaps in the nearest neighbor search, which directly affects the hit rates. This is reflected by the higher stdev reported above.
 
+{% include image-wide url="turboquant-2bit-error-dist.png" caption="Error Distribution at 2-bit budget: Pure MSE (green) is systematically shifted left (biased), while TurboQuant IP with QJL (orange) is centered at zero (unbiased) but with a wider, higher-variance spread." %}
+
 It turns out I shouldn't have been this surpised. This result is even present in the original [TurboQuant paper](https://arxiv.org/pdf/2504.19874), although it was not highlighted:
 
 ![TurboQuant Inner Product Error](/images/turboquant-inner-prod.png)
