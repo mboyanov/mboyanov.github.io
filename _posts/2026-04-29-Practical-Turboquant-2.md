@@ -179,7 +179,7 @@ We can see that with bits $\ge$ 3, the reported inner product distortion is bett
 
 The same finding was also reported in [Revisiting RabitQ and TurboQuant](https://arxiv.org/abs/2604.19528). We can see that across all three experiments, the TurboQuantMSE version achieves higher recall for the same bit budget.
 
-![TurboQuant Recall Comparison](/images/revisiting-turboquant.png)
+{% include image-wide url="revisiting-turboquant.png" caption="TurboQuant Recall Comparison (from Revisiting RabitQ and TurboQuant)" %}
 
 ## So what does this mean? The Rank vs. Value Dilemma
 
