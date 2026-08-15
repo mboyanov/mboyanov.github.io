@@ -163,11 +163,13 @@ For a dataset, we will sample a subset of 100,000 embeddings from the BgGPT-3 mo
 | **Hit Rate@2** | 0.958 | 0.956 | 0.976 | 0.964 | 0.979 | 0.977 |
 | **Hit Rate@10** | 0.979 | 0.980 | 0.984 | 0.980 | 0.982 | 0.981 |
 
-As can be seen from the table, the TurboQuantIP method effectively eliminates the bias in the dot product approximations, bringing it very close to zero. However, this comes at a cost in terms of mean absolute error and hit rates, especially for lower bit budgets.
+As can be seen from the table, the **TurboQuantIP method effectively eliminates the bias** in the dot product approximations, bringing it very close to zero. However, this comes at a cost in terms of **higher mean absolute error and lower hit rates**, especially for lower bit budgets.
 
 I was surprised by this finding and kept coming back to my code - I was thinking there was a bug somewhere. My expectation was that the unbiased quantizer should lead to better search performance. It turns out that the TurboQuantIP method, while eliminating bias, actually results in slightly worse MAE and hit rates compared to the TurboQuantMSE method. 
 
-But why is that? I dug deeper and found out that the answer lies in the nature of the QJL transform. By introducing stochastic noise to eliminate bias, we also introduce variance into the dot product approximations. This variance can lead to ranking swaps in the nearest neighbor search, which directly affects the hit rates. This is reflected by the higher stdev reported above.
+But why is that?
+
+I dug deeper and found out that the answer lies in the nature of the QJL transform. **By introducing stochastic noise to eliminate bias, we also introduce variance into the dot product approximations**. This variance can lead to ranking swaps in the nearest neighbor search, which directly affects the hit rates. This is reflected by the higher stdev reported above.
 
 It turns out I shouldn't have been this surpised. This result is even present in the original [TurboQuant paper](https://arxiv.org/pdf/2504.19874), although it was not highlighted:
 
