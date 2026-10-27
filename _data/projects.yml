@@ -1,0 +1,30 @@
+# Projects shown on /portfolio.html, newest first.
+# Each project is one card; each group is a row of links (demo, code, write-up, ...).
+
+- name: TurboQuant Inspector
+  summary: >-
+    What does TurboQuant's random rotation actually do to real embeddings?
+    Upload your own vectors (or use the BgGPT-3 sample) and see the rotation,
+    the Lloyd-Max codebook and the reconstruction error side by side.
+  groups:
+    - label: Demo
+      icon: rocket
+      links:
+        - label: Hugging Face Space
+          url: https://huggingface.co/spaces/mboyanov/turboquant-inspect
+    - label: Code
+      icon: code
+      links:
+        - label: Notebook 1
+          url: https://github.com/mboyanov/mboyanov.github.io/blob/master/_notebooks/2026-04-04-Practical-TurboQuant.ipynb
+        - label: Notebook 2
+          url: https://github.com/mboyanov/mboyanov.github.io/blob/master/_notebooks/2026-06-24-Practical-TurboQuant-2.ipynb
+        - label: Inspector source
+          url: https://huggingface.co/spaces/mboyanov/turboquant-inspect/tree/main
+    - label: Write-up
+      icon: book
+      links:
+        - label: "Part 1: Random rotation"
+          url: /2026/04/04/Practical-TurboQuant.html
+        - label: "Part 2: 1-bit QJL"
+          url: /2026/04/29/Practical-Turboquant-2.html
