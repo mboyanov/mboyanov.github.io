@@ -141,3 +141,59 @@
   overflow: hidden;
   background-color: #f1f1f1;
 }
+/* Portfolio page */
+.project-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid $grey-color-light;
+  border-radius: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.project-card:hover {
+  border-color: $brand-color;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.project-card h2 {
+  margin-bottom: .5rem;
+}
+
+.project-card p {
+  flex-grow: 1;
+  font-size: .95rem;
+}
+
+.project-links {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .4rem 1rem;
+  margin: 0;
+  padding-top: .75rem;
+  border-top: 1px solid $grey-color-light;
+}
+
+.project-links dt {
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: $grey-color;
+  white-space: nowrap;
+  line-height: 1.9;
+}
+
+.project-links dt .octicon {
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.project-links dd {
+  margin: 0;
+}

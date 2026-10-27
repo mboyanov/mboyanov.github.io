@@ -1,0 +1,28 @@
+---
+layout: base
+title: Portfolio
+---
+
+<h1>Portfolio</h1>
+
+<p>Things I've built alongside the articles on this blog: live demos you can play with, the code behind them, and the write-ups that explain how they work.</p>
+
+<div class="project-cards">
+  {% for project in site.data.projects %}
+  <section class="project-card">
+    <h2>{{ project.name }}</h2>
+    <p>{{ project.summary }}</p>
+
+    <dl class="project-links">
+      {% for group in project.groups %}
+      <dt>{% octicon {{ group.icon }} height:16 %} {{ group.label }}</dt>
+      <dd>
+        {% for link in group.links %}
+        <a href="{{ link.url | relative_url }}">{{ link.label }}</a>{% unless forloop.last %} &middot; {% endunless %}
+        {% endfor %}
+      </dd>
+      {% endfor %}
+    </dl>
+  </section>
+  {% endfor %}
+</div>
