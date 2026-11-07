@@ -1,6 +1,24 @@
 # Projects shown on /portfolio.html, newest first.
 # Each project is one card; each group is a row of links (demo, code, write-up, ...).
 
+- name: Votemap 2026
+  summary: >-
+    An interactive map of the 2026 Bulgarian presidential run-off, polling
+    section by polling section. Zoom in to see how each section voted, view
+    the breakdown per county, and search for a section by its number, place
+    or address. The map is in Bulgarian.
+  groups:
+    - label: Demo
+      icon: rocket
+      links:
+        - label: Live map
+          url: https://mboyanov.github.io/votemap-2026/
+    - label: Code
+      icon: code
+      links:
+        - label: GitHub repo
+          url: https://github.com/mboyanov/votemap-2026
+
 - name: TurboQuant Inspector
   summary: >-
     What does TurboQuant's random rotation actually do to real embeddings?
