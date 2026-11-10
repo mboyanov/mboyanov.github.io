@@ -1,6 +1,38 @@
 # Projects shown on /portfolio.html, newest first.
 # Each project is one card; each group is a row of links (demo, code, write-up, ...).
 
+- name: Bg2Vec search
+  summary: >-
+    BgGPT before and after LLM2Vec, side by side. Search 30k Bulgarian
+    Wikipedia passages with BgGPT, Bg2Vec, multilingual-e5 and BM25, and see
+    where each one ranks the target article. The "How it works" tab shows the
+    attention masks, the MNTP collator and the SimCSE similarity matrix on
+    real inputs.
+  groups:
+    - label: Demo
+      icon: rocket
+      links:
+        - label: Hugging Face Space
+          url: https://huggingface.co/spaces/mboyanov/bg2vec-demo
+    - label: Code
+      icon: code
+      links:
+        - label: Training repo
+          url: https://github.com/mboyanov/bg2vec
+        - label: Demo source
+          url: https://huggingface.co/spaces/mboyanov/bg2vec-demo/tree/main
+        - label: Model
+          url: https://huggingface.co/mboyanov/bg2vec
+    - label: Write-up
+      icon: book
+      links:
+        - label: "Part 1: Apply LLM2Vec"
+          url: /2024/05/18/Bg2Vec.html
+        - label: "Part 2: Training data"
+          url: /2024/05/30/Bg2Vec-Preprocessing.html
+        - label: "Part 3: Evaluation"
+          url: /2024/11/02/Bg2VecEval.html
+
 - name: Votemap 2026
   summary: >-
     An interactive map of the 2026 Bulgarian presidential run-off, polling
